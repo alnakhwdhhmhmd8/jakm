@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "jQ8l67g9LFZf48y4hnr-Q"
+uri = "file://bot_fixed.zip"
+type = "unspecified"
+title = "ملفات البوت المُصلحة (bot_fixed.zip)"
