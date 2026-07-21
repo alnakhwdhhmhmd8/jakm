@@ -107,11 +107,17 @@ bot.replyMarkup = function(params)
         if type(row) == 'table' then
           for j, btn in ipairs(row) do
             if type(btn) == 'table' and btn.type == 'text' and btn.text then
+              -- تطبيق اللون المخزن
               local stored = Redis:get(TheMero.."Mero:BtnColor:"..chatId..":"..btn.text)
               if stored and stored ~= '' and stored ~= 'default' then
                 btn.style = stored
               elseif stored == 'default' then
                 btn.style = nil
+              end
+              -- تطبيق الإيموجي المخصص (بريميوم) المخزن
+              local storedEmoji = Redis:get(TheMero.."Mero:BtnEmoji:"..chatId..":"..btn.text)
+              if storedEmoji and storedEmoji ~= '' then
+                btn.text = storedEmoji .. ' ' .. btn.text
               end
             end
           end
@@ -19581,7 +19587,10 @@ local _EscDev = _RawDev:gsub('([_*%[%]()~`>#%+%-%=|{}%.!])', '\\%1')
 local _HelpText = '⤶ اهـلين فـيك بـ اوامــر روبي 🪁\n\n𝟏 ↢ اوامـر الادارة\n𝟐 ↢ اوامـر الاعدادات\n𝟑 ↢ اوامـر القفل والتعطيل\n𝟒  ↢ اوامـر التسليه\n𝟓 ↢ اوامـر الترفيه\n𝟔 ↢ اوامـر الالعاب\n𝟕 ↢ اوامـر الذكاء الاصطناعي\n𝟖 ↢ اوامـر التنظيف والحماية\n𝟗 ↢ اوامـر التحميل\n𝟏𝟎 ↢ اوامـر التنظيف\n𝟏𝟏 ↢ اوامـر الحماية المشددة\n\n⌯ Made by : [- Ahmed </>](tg://user?id='..(Sudo_Id)..')'
 local _HelpPhoto = Redis:get(TheMero.."Mero:Help:Photo")
 if _HelpPhoto then
-return bot.sendPhoto(msg_chat_id, msg_id, _HelpPhoto, _HelpText, "md", false, nil, nil, nil, nil, nil, nil, nil, nil, reply_markup)
+  local _ok = pcall(function()
+    bot.sendPhoto(msg_chat_id, msg_id, _HelpPhoto, _HelpText, "md", false, nil, nil, nil, nil, nil, nil, nil, nil, reply_markup)
+  end)
+  if _ok then return end
 end
 return send(msg_chat_id,msg_id, _HelpText,"md",true, false, false, false, reply_markup)
 
@@ -23177,21 +23186,27 @@ if text and (text == "يستحق" or text == "تستحق" or text == "مستحق
     -- حذف الرسالة فوراً
     pcall(function() bot.deleteMessages(msg_chat_id, {msg_id}) end)
     
-    -- فحص الاشتراك في القناة
-    local subCh = false
+    -- فحص الاشتراك في القناة (إذا فشل الفحص نعطيه فائدة الشك ونسمح بالتصويت)
+    local subCh = true
     pcall(function()
       local mb = bot.getChatMember('@'..contestChannel, userId)
-      if mb and mb.status and mb.status.luatele ~= "chatMemberStatusLeft" and mb.status.luatele ~= "chatMemberStatusBanned" then
-        subCh = true
+      if mb and mb.status then
+        local st = mb.status.luatele
+        if st == "chatMemberStatusLeft" or st == "chatMemberStatusBanned" then
+          subCh = false
+        end
       end
     end)
     
     -- فحص الاشتراك في القروب
-    local subGrp = false
+    local subGrp = true
     pcall(function()
       local mb2 = bot.getChatMember(msg_chat_id, userId)
-      if mb2 and mb2.status and mb2.status.luatele ~= "chatMemberStatusLeft" and mb2.status.luatele ~= "chatMemberStatusBanned" then
-        subGrp = true
+      if mb2 and mb2.status then
+        local st2 = mb2.status.luatele
+        if st2 == "chatMemberStatusLeft" or st2 == "chatMemberStatusBanned" then
+          subGrp = false
+        end
       end
     end)
     
@@ -23614,8 +23629,17 @@ local reply_markup = bot.replyMarkup{type = 'keyboard',resize = true,is_personal
 },
 }
 }
-local StartPhoto = Redis:get(TheMero.."Mero:Start:Photo") or './welcome.jpg'
-bot.sendPhoto(msg_chat_id, msg_id, StartPhoto, CmdStart, "md", false, nil, nil, nil, nil, nil, nil, nil, nil, reply_markupp)
+local StartPhoto = Redis:get(TheMero.."Mero:Start:Photo")
+if StartPhoto then
+  local _ok = pcall(function()
+    bot.sendPhoto(msg_chat_id, msg_id, StartPhoto, CmdStart, "md", false, nil, nil, nil, nil, nil, nil, nil, nil, reply_markupp)
+  end)
+  if not _ok then
+    send(msg_chat_id,msg_id, CmdStart, "md", false, false, false, false, reply_markupp)
+  end
+else
+  send(msg_chat_id,msg_id, CmdStart, "md", false, false, false, false, reply_markupp)
+end
 send(msg_chat_id,msg_id,'• اختر ما تريده من الكيبورد', 'md', false, false, false, false, reply_markup) 
 end
 else
@@ -23952,8 +23976,17 @@ if text == '/start' then
         }
         
         -- إرسال رسالة الترحيب مع الصورة والأزرار الانلاين
-        local StartPhoto = Redis:get(TheMero.."Mero:Start:Photo") or './welcome.jpg'
-        bot.sendPhoto(msg_chat_id, msg_id, StartPhoto, CmdStart, "md", false, nil, nil, nil, nil, nil, nil, nil, nil, reply_markupp)
+        local StartPhoto = Redis:get(TheMero.."Mero:Start:Photo")
+        if StartPhoto then
+          local _ok2 = pcall(function()
+            bot.sendPhoto(msg_chat_id, msg_id, StartPhoto, CmdStart, "md", false, nil, nil, nil, nil, nil, nil, nil, nil, reply_markupp)
+          end)
+          if not _ok2 then
+            send(msg_chat_id, msg_id, CmdStart, "md", false, false, false, false, reply_markupp)
+          end
+        else
+          send(msg_chat_id, msg_id, CmdStart, "md", false, false, false, false, reply_markupp)
+        end
         -- إرسال رسالة الكيبورد
         send(msg_chat_id, msg_id, '⇜ اهلا بك في كيبورد الاعضاء', 'md', false, false, false, false, reply_markup)
     end
@@ -24915,21 +24948,27 @@ if text and (text:match("^يستحق$") or text:match("^تستحق$") or text:ma
     -- نحذف الرسالة فورا
     pcall(function() bot.deleteMessages(msg_chat_id, {msg_id}) end)
     
-    -- نتحقق من الاشتراك في القناة
-    local subChannel = false
+    -- نتحقق من الاشتراك في القناة (إذا فشل الفحص نعطيه فائدة الشك)
+    local subChannel = true
     pcall(function()
       local mb = bot.getChatMember('@'..contestChannel, userId)
-      if mb and mb.status and mb.status.luatele ~= "chatMemberStatusLeft" and mb.status.luatele ~= "chatMemberStatusBanned" then
-        subChannel = true
+      if mb and mb.status then
+        local st = mb.status.luatele
+        if st == "chatMemberStatusLeft" or st == "chatMemberStatusBanned" then
+          subChannel = false
+        end
       end
     end)
     
     -- نتحقق من الاشتراك في القروب
-    local subGroup = false
+    local subGroup = true
     pcall(function()
       local mb2 = bot.getChatMember(msg_chat_id, userId)
-      if mb2 and mb2.status and mb2.status.luatele ~= "chatMemberStatusLeft" and mb2.status.luatele ~= "chatMemberStatusBanned" then
-        subGroup = true
+      if mb2 and mb2.status then
+        local st2 = mb2.status.luatele
+        if st2 == "chatMemberStatusLeft" or st2 == "chatMemberStatusBanned" then
+          subGroup = false
+        end
       end
     end)
     

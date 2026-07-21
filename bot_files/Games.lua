@@ -1,3 +1,24 @@
+-- دالة مساعدة: تنشئ حساباً بنكياً تلقائياً إذا لم يكن للاعب حساب
+local function _autoCreateBankAccount(uid)
+  if not uid or uid == 0 then return end
+  if not Redis:sismember(TheMero.."booob", uid) then
+    Redis:sadd(TheMero.."booob", uid)
+    Redis:sadd(TheMero.."rrfffid", uid)
+    if not Redis:get(TheMero.."boobb"..uid) then
+      Redis:set(TheMero.."boobb"..uid, tostring(math.random(100000000, 999999999)))
+    end
+    if not Redis:get(TheMero.."bbobb"..uid) then
+      Redis:set(TheMero.."bbobb"..uid, "العاب")
+    end
+    if not Redis:get(TheMero.."shkse"..uid) then
+      Redis:set(TheMero.."shkse"..uid, "طيبة")
+    end
+    if not Redis:get(TheMero.."doltebank"..uid) then
+      Redis:set(TheMero.."doltebank"..uid, "غير محدد")
+    end
+  end
+end
+
 function RunGames(msg)
 -- يستخدم chat_id كمعرف للجلسة عندما يكون المرسل قناة
 local _games_uid = (msg.sender_id and msg.sender_id.user_id) or msg.chat_id or 0
@@ -25,7 +46,7 @@ if text == Redis:get(TheMero.."Mero:Game:Smile"..msg.chat_id) then
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:del(TheMero.."Mero:Game:Smile"..msg.chat_id)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -36,7 +57,7 @@ if text == Redis:get(TheMero.."Mero:Game:Monotonous"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:Monotonous"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -47,7 +68,7 @@ if text == Redis:get(TheMero.."Mero:Game:alam"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:alam"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -58,7 +79,7 @@ if text == Redis:get(TheMero.."Mero:Game:ausm"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:ausm"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -69,7 +90,7 @@ if text == Redis:get(TheMero.."Mero:Game:Riddles"..msg.chat_id) then
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:del(TheMero.."Mero:Game:Riddles"..msg.chat_id)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -80,7 +101,7 @@ if text == Redis:get(TheMero.."Mero:Game:Meaningof"..msg.chat_id) then
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:del(TheMero.."Mero:Game:Meaningof"..msg.chat_id)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -91,7 +112,7 @@ if text == Redis:get(TheMero.."Mero:Game:Reflection"..msg.chat_id) then
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:del(TheMero.."Mero:Game:Reflection"..msg.chat_id)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -109,7 +130,7 @@ Redis:del(TheMero.."Mero:SADD:NUM"..msg.chat_id..(_games_uid))
 Redis:del(TheMero.."Mero:Game:Estimate"..msg.chat_id..(_games_uid))
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid),5)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 500)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local _gbal5a = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"⇜ مبروك فزت وخمنت الرقم الصحيح\n⇜ تم اضافة لك 500 درهم 💵\n⇜ رصيدك البنكي : ".._gbal5a.." درهم 💵 \n✧","md",true)
 elseif tonumber(NUM) ~= tonumber(GETNUM) then
@@ -129,7 +150,7 @@ if text == Redis:get(TheMero.."Mero:Game:Difference"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:Difference"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -140,7 +161,7 @@ if text == Redis:get(TheMero.."Mero:Game:Example"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:Example"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -181,7 +202,7 @@ if text == ""..(Redis:get(TheMero..'Games:Set:Answer'..msg.chat_id) or '66765$47
 Redis:del(TheMero.."Games:Set:Answer"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid),5)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 500)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 Redis:del(TheMero.."Games:Set:Answer"..msg.chat_id)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbal5c = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
@@ -413,7 +434,7 @@ if text == Redis:get(TheMero.."Mero:Game:Arbieq"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:Arbieq"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -1571,7 +1592,7 @@ if text == Redis:get(TheMero.."Mero:Game:Arbieq:aslame"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:Arbieq:aslame"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -1582,7 +1603,7 @@ if text == Redis:get(TheMero.."Mero:Game:Arbieq:aslamek"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:Arbieq:aslamek"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -1593,7 +1614,7 @@ if text == Redis:get(TheMero.."Mero:Game:Monotonousss"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:Monotonousss"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -1605,7 +1626,7 @@ if text == Redis:get(TheMero.."mshaher"..msg.chat_id) then
 Redis:del(TheMero.."mshaher"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -1616,7 +1637,7 @@ if text == Redis:get(TheMero.."mshaherr"..msg.chat_id) then
 Redis:del(TheMero.."mshaherr"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -1627,7 +1648,7 @@ if text == Redis:get(TheMero.."mshaherrr"..msg.chat_id) then
 Redis:del(TheMero.."mshaherrr"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -1638,7 +1659,7 @@ if text == Redis:get(TheMero.."photohzr"..msg.chat_id) then
 Redis:del(TheMero.."photohzr"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -1686,12 +1707,12 @@ RtList = list[math.random(#list)]
 if RtList == "3" then
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid),3)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 300)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 StatusRt = "الف مبروك حظك حلو ربحت 300 درهم 💵"
 elseif RtList == "5" then
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid),5)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 500)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 StatusRt = "الف مبروك حظك حلو ربحت 500 درهم 💵"
 elseif RtList == "-3" then
 local pts3 = Redis:decrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid),3)
@@ -4407,7 +4428,7 @@ if text == Redis:get(TheMero.."Mero:Game:klmaa"..msg.chat_id) then
 Redis:del(TheMero.."Mero:Game:klmaa"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -4418,7 +4439,7 @@ if text and text:lower() == Redis:get(TheMero.."Mero:Game:KatQ"..msg.chat_id):lo
 Redis:del(TheMero.."Mero:Game:KatQ"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -4429,7 +4450,7 @@ if text and text:lower() == Redis:get(TheMero.."Mero:Game:TweetQ"..msg.chat_id):
 Redis:del(TheMero.."Mero:Game:TweetQ"..msg.chat_id)
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -7416,7 +7437,7 @@ if text then
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:del(TheMero.."GAME:CHER"..msg.chat_id)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -7491,7 +7512,7 @@ Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 5)
 Redis:del(TheMero..':List_Rolet:'..msg.chat_id) 
 Redis:del(TheMero..":Witting_StartGame:"..msg.chat_id..(_games_uid))
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 500)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local _gbal_luck = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,'⇜ صاحب الحظ ( '..UserName..' )\n⇜ ربحت معنا 500 درهم 💵\n⇜ رصيدك البنكي : '.._gbal_luck..' درهم 💵' )
 end
@@ -7535,7 +7556,7 @@ if text == ''..(Redis:get(TheMero..'bot:bkbk6'..msg.chat_id) or 'لفاتع')..'
 Redis:del(TheMero..'bot:bkbk6'..msg.chat_id)  
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
@@ -7544,7 +7565,7 @@ if text == ''..(Redis:get(TheMero..'bot:bkbk7'..msg.chat_id) or 'لفاتع')..'
 Redis:del(TheMero..'bot:bkbk7'..msg.chat_id)  
 Redis:incrby(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid), 1)
 Redis:incrby(TheMero.."rrfff"..(_games_uid), 100)
-Redis:sadd(TheMero.."rrfffid", (_games_uid))
+_autoCreateBankAccount(_games_uid)
 local Num = Redis:get(TheMero.."Mero:Num:Add:Games"..msg.chat_id..(_games_uid)) or 0
 local _gbalr = string.format("%.0f", tonumber(Redis:get(TheMero.."rrfff"..(_games_uid)) or 0))
 return send(msg_chat_id,msg_id,"\n⇜ كفو اجابتك صح \n⇜ تم اضافة لك 100 درهم 💵\n⇜ رصيدك البنكي : ".._gbalr.." درهم 💵 \n✧","md",true)
